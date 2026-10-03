@@ -1,0 +1,4 @@
+Colluding_Attackers_M,Pairwise_Accuracy (%),Pairwise_F1 (%),Proposed_Consensus_Accuracy (%),Proposed_Consensus_F1 (%),Robustness_Gain (%)
+1,99.7,99.7,99.7,99.7,0.0
+2,82.69999999999999,81.2,98.7,98.5,17.299999999999994
+3,65.7,62.7,97.7,97.3,34.599999999999994

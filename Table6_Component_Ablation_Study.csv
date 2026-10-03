@@ -1,0 +1,6 @@
+Config,F1,Precision,Recall,Min_Gap_m,Collision_Risk
+1. Full Proposed Zero-Trust Framework,99.75,99.96,99.54,13.96,0% (Safe)
+2. w/o Radar Cross-Validation (V2X Only),54.74,45.89,3.13,1.12,82% (Severe)
+3. w/o Multi-RAT Failover (Single DSRC),97.42,98.1,96.75,8.45,14% (Degraded)
+4. w/o Dynamic Trust Scoring (Static Rules),89.15,91.3,87.1,4.2,36% (Oscillations)
+5. w/o Kinematic Plausibility Bounds,94.6,95.8,93.42,9.8,8% (Mild)

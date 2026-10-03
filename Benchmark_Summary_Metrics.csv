@@ -1,0 +1,7 @@
+Metric,Value
+Accuracy,99.73%
+Precision,99.87%
+Recall,99.54%
+F1_Score,99.70%
+ROC_AUC,1.0000
+Inference_Latency_ms,0.0026 ms

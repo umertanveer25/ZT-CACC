@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zero-trust-cav"
+version = "1.0.0"
+description = "A Multi-Modal Zero-Trust Verification and Resilient CACC Platooning Framework for Heterogeneous Multi-RAT V2X Networks."
+readme = "README.md"
+authors = [
+    { name = "M. Umer Salam", email = "umer@example.com" }
+]
+license = { text = "MIT" }
+keywords = [
+    "autonomous-vehicles",
+    "cacc",
+    "zero-trust",
+    "v2x",
+    "veremi",
+    "multi-rat",
+    "string-stability",
+    "explainable-ai",
+    "shap"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "pandas>=2.0.0",
+    "scikit-learn>=1.3.0",
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+    "shap>=0.45.0",
+    "pyyaml>=6.0",
+    "tqdm>=4.65.0",
+    "joblib>=1.3.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black>=23.0",
+    "flake8>=6.0",
+    "mypy>=1.0"
+]
+
+[project.scripts]
+zt-cav = "run_all_experiments:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

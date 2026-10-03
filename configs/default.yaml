@@ -1,0 +1,43 @@
+sim:
+  dt: 0.01
+  total_time: 40.0
+  num_vehicles: 8
+  v_target: 25.0
+  d0: 5.0
+  ht: 0.60
+  vehicle_length: 4.5
+  random_seed: 42
+
+multi_rat:
+  vlc_delay_ms: 1.80
+  its_g5_delay_ms: 8.40
+  lte_v2x_delay_ms: 14.20
+  glare_start_s: 12.0
+  glare_end_s: 24.0
+  jamming_start_s: 18.0
+  jamming_end_s: 28.0
+
+cacc:
+  kp: 1.0
+  kd: 2.0
+  ka: 1.0
+  tau_actuator: 0.10
+  a_max: 3.0
+  a_min: -6.0
+  acc_fallback_ht: 1.20
+
+detection:
+  alpha_decay: 0.35
+  beta_recovery: 0.05
+  threat_threshold: 0.50
+  radar_pos_noise_std: 0.30
+  radar_spd_noise_std: 0.15
+  jerk_bound_limit: 5.5
+
+attack:
+  target_vehicle_idx: 2
+  attack_start_s: 15.0
+  attack_end_s: 26.0
+  bogus_accel: -6.0
+  speed_drift: 12.0
+  pos_offset: 8.0

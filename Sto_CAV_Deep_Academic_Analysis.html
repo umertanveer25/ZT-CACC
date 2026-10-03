@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Deep-Dive: Sto-CAV Distributed Simulation Platform for CAVs</title>
+    <!-- KaTeX for LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+    <!-- Mermaid for Flowcharts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --accent: #1e40af;
+            --accent-light: #3b82f6;
+            --border: #e2e8f0;
+            --code-bg: #1e293b;
+            --code-text: #f8fafc;
+            --tag-bg: #dbeafe;
+            --tag-text: #1e40af;
+        }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.85;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        header.paper-meta {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        .badge {
+            display: inline-block;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        h1.title {
+            font-size: 2.2rem;
+            line-height: 1.3;
+            color: var(--text-primary);
+            margin: 10px 0 20px 0;
+            font-weight: 800;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            background: var(--bg-secondary);
+            padding: 18px 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+        .meta-item strong {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .summary-box {
+            background: #eff6ff;
+            border-left: 5px solid var(--accent);
+            padding: 20px 24px;
+            border-radius: 0 8px 8px 0;
+            margin: 30px 0;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+        h2 {
+            font-size: 1.55rem;
+            color: #0f172a;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h3 {
+            font-size: 1.25rem;
+            color: #1e293b;
+            margin-top: 30px;
+            margin-bottom: 14px;
+        }
+        p {
+            margin-bottom: 18px;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+        .formula-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .formula-desc {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            text-align: left;
+            margin-top: 10px;
+            border-top: 1px dashed var(--border);
+            padding-top: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 28px 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            text-align: left;
+        }
+        th {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+        .mermaid {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 18px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+        .code-caption {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: -12px;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+        .gap-box {
+            background: #fffbeb;
+            border-left: 5px solid #d97706;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 30px 0;
+        }
+        .gap-box h4 {
+            margin-top: 0;
+            color: #b45309;
+        }
+        footer {
+            margin-top: 60px;
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="paper-meta">
+        <span class="badge">IEEE Access 2025 • Academic Deep Dive</span>
+        <h1 class="title">Sto-CAV: A Distributed Simulation Platform for Connected and Automated Vehicles Running With Heterogeneous Technologies and Devices in the Loop</h1>
+        
+        <div class="meta-grid">
+            <div class="meta-item">
+                <strong>Authors</strong>
+                Barbara M. Masini, Mirko Mirabella, Leonardo Donnini, Muhammad Ali Umair, Marco Meucci, Mauro Aresti, Jacopo Catani
+            </div>
+            <div class="meta-item">
+                <strong>Affiliation</strong>
+                CNR-IEIIT (Bologna) & CNR-INO (Florence), Italy
+            </div>
+            <div class="meta-item">
+                <strong>Publication / DOI</strong>
+                IEEE Access, Vol. 13, 2025 • <a href="https://doi.org/10.1109/access.2025.3572358" target="_blank">10.1109/ACCESS.2025.3572358</a>
+            </div>
+            <div class="meta-item">
+                <strong>Platform Code Status</strong>
+                Proprietary / Research Testbed (Architecture Documented in IEEE Access)
+            </div>
+        </div>
+    </header>
+
+    <div class="summary-box">
+        <h3>Executive Technical Summary (One-Sentence Synthesis)</h3>
+        <p><strong>Sto-CAV</strong> introduces a modular, geographically distributed co-simulation platform that bridges microscopic road traffic simulators (SUMO), multi-RAT communications (ITS-G5, LTE-V2X, Optical VLC), and physical Hardware/Devices-in-the-Loop (DIL) across distributed edge servers via a centralized Control Unit (CU), achieving millisecond-accurate latency benchmarking for safety-critical Connected and Automated Vehicle (CAV) applications.</p>
+    </div>
+
+    <h2>1. Research Background & Motivation</h2>
+    <p>Connected and Automated Vehicles (CAVs) represent the cornerstone of future Cooperative Intelligent Transport Systems (C-ITS). To achieve safe autonomous driving (SAE Level 4/5), cooperative maneuvering, and high-density platooning, vehicles must exchange time-critical situational awareness data (such as ETSI CAM, DENM, and 3GPP BSM packets) with sub-100ms or even sub-10ms latency bounds. However, physical real-world road trials involving dozens of automated vehicles are logistically intractable, economically prohibitive, and hazardous under emergency scenarios.</p>
+
+    <p>Consequently, researchers rely heavily on computer simulations. Existing vehicular network simulation frameworks (such as Veins, Artery, PLEXE, and Simu5G) have propelled the field forward, but they suffer from significant systemic bottlenecks when faced with next-generation vehicular ecosystems:</p>
+    <ul>
+        <li><strong>Single-RAT Homogeneity:</strong> Most frameworks model only a single radio access technology at a time (e.g., standard IEEE 802.11p/ITS-G5 or single-cell LTE-V2X), failing to capture multi-RAT hybrid access where vehicles dynamically switch between RF and Optical Wireless Communications (OWC/VLC).</li>
+        <li><strong>Lack of Real Hardware-in-the-Loop (HIL/DIL) Integration:</strong> Software-only simulations rely on idealized physical-layer curves, ignoring physical transceiver queuing delays, operating system jitter, firmware overheads, and real hardware channel impairments.</li>
+        <li><strong>Monolithic Compute Bottlenecks:</strong> Running complex vehicle kinematics, ray-tracing optical channels, and large-scale RF packet scheduling on a single workstation leads to severe simulation deceleration and temporal desynchronization.</li>
+    </ul>
+
+    <p>To overcome these foundational limitations, Masini et al. propose <strong>Sto-CAV</strong> (<em>Simulation Platform for Connected and Automated Vehicles</em>), a distributed, modular framework enabling heterogeneous communication technologies and physical devices located in disparate geographical laboratories to co-execute in real time.</p>
+
+    <h2>2. Architectural Taxonomy & Comparative Positioning</h2>
+    <p>Table 1 highlights how Sto-CAV differentiates itself against prominent vehicular simulation suites in literature across six key architectural dimensions.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Simulation Suite</th>
+                <th>Underlying Traffic Engine</th>
+                <th>Multi-RAT Support</th>
+                <th>Optical / VLC Channel</th>
+                <th>Device-in-the-Loop (DIL)</th>
+                <th>Distributed Architecture</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Veins (OMNeT++ / SUMO)</strong></td>
+                <td>SUMO</td>
+                <td>Limited (IEEE 802.11p)</td>
+                <td>No</td>
+                <td>No</td>
+                <td>Monolithic</td>
+            </tr>
+            <tr>
+                <td><strong>Artery</strong></td>
+                <td>SUMO</td>
+                <td>ITS-G5 (ETSI Stack)</td>
+                <td>No</td>
+                <td>No</td>
+                <td>Monolithic</td>
+            </tr>
+            <tr>
+                <td><strong>PLEXE</strong></td>
+                <td>SUMO</td>
+                <td>802.11p / LTE-V2X (Mode 4)</td>
+                <td>No</td>
+                <td>No</td>
+                <td>Monolithic</td>
+            </tr>
+            <tr>
+                <td><strong>CARLA + NS-3</strong></td>
+                <td>CARLA (3D Engine)</td>
+                <td>C-V2X / 5G NR</td>
+                <td>No</td>
+                <td>Partial (ROS bridge)</td>
+                <td>Client-Server</td>
+            </tr>
+            <tr>
+                <td><strong>Sto-CAV (Base Paper)</strong></td>
+                <td>SUMO / Custom API</td>
+                <td><strong>Heterogeneous (ITS-G5, LTE-V2X, 5G/6G)</strong></td>
+                <td><strong>Yes (Dedicated Optical Model)</strong></td>
+                <td><strong>Full (Multi-lab DIL)</strong></td>
+                <td><strong>Geographically Distributed</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. Mathematical Formulation of Sto-CAV Heterogeneous Communications</h2>
+    <p>Sto-CAV formally characterizes packet transmission and reception across heterogeneous radio frequency (RF) and optical wireless (OWC/VLC) channels.</p>
+
+    <h3>A. RF Channel & Signal-to-Interference-plus-Noise Ratio (SINR)</h3>
+    <p>For RF links (ITS-G5 and LTE-V2X Sidelink PC5), the received SINR $\gamma_{ij}^{(r)}$ between transmitting vehicle $i$ and receiving vehicle $j$ over radio technology $r \in \{\text{G5}, \text{LTE}\}$ is expressed as:</p>
+    
+    <div class="formula-card">
+        $$\gamma_{ij}^{(r)} = \frac{P_{tx}^{(r)} \cdot G_{tx}^{(r)} \cdot G_{rx}^{(r)} \cdot h_{ij}^{(r)} \cdot d_{ij}^{-\alpha_r}}{\sum_{k \neq i} P_{tx, k}^{(r)} \cdot h_{kj}^{(r)} \cdot d_{kj}^{-\alpha_r} + N_0^{(r)} \cdot B^{(r)}}$$
+        <div class="formula-desc">
+            Where $P_{tx}^{(r)}$ is transmit power, $G_{tx}, G_{rx}$ are antenna gains, $h_{ij}$ is the small-scale fading coefficient (Nakagami-$m$ or Rayleigh), $d_{ij}$ is Euclidean distance with path-loss exponent $\alpha_r$, $B^{(r)}$ is channel bandwidth (10/20 MHz), and $N_0^{(r)}$ is thermal noise power spectral density.
+        </div>
+    </div>
+
+    <h3>B. Optical Wireless Communications (OWC / VLC) Lambertian Model</h3>
+    <p>Sto-CAV includes high-speed Optical Wireless Communication (VLC using vehicular headlights and taillights). The DC channel gain $H_{VLC}(0)$ following a generalized Lambertian radiation pattern is governed by:</p>
+
+    <div class="formula-card">
+        $$H_{VLC}(0) = \begin{cases} \frac{(m_L + 1) A_{rx}}{2\pi d_{ij}^2} \cos^{m_L}(\phi_{ij}) T_s(\psi_{ij}) g(\psi_{ij}) \cos(\psi_{ij}), & 0 \le \psi_{ij} \le \Psi_c \\ 0, & \psi_{ij} > \Psi_c \end{cases}$$
+        <div class="formula-desc">
+            Where $m_L = -\frac{\ln(2)}{\ln(\cos(\Phi_{1/2}))}$ is the Lambertian emission order, $A_{rx}$ is active photo-detector area, $\phi_{ij}$ is radiance angle, $\psi_{ij}$ is incidence angle, $T_s(\psi)$ is optical filter transmission, $g(\psi) = \frac{n^2}{\sin^2(\Psi_c)}$ is optical concentrator gain with refractive index $n$, and $\Psi_c$ is receiver Field-of-View (FoV) semi-angle.
+        </div>
+    </div>
+
+    <h3>C. End-to-End Latency Decomposition</h3>
+    <p>Sto-CAV models total transaction latency $\tau_{e2e}$ by aggregating all modular processing and transmission delays:</p>
+    <div class="formula-card">
+        $$\tau_{e2e} = \tau_{gen} + \tau_{queue} + \tau_{tx}^{(r)} + \tau_{prop} + \tau_{proc} + \tau_{DIL}$$
+        <div class="formula-desc">
+            Where $\tau_{DIL}$ represents the physical round-trip hardware serialization and socket latency across geographically distributed testbed nodes.
+        </div>
+    </div>
+
+    <h2>4. Core Platform Architecture & Execution Flow</h2>
+    <p>Sto-CAV is structured into five interconnected modular tiers coordinated by a master <strong>Control Unit (CU)</strong>:</p>
+
+    <div class="mermaid">
+    flowchart TD
+        subgraph MasterNode["Master Coordination Node"]
+            CU["Control Unit (CU)<br>• Time-step Synchronization<br>• Message Routing & Event Broker"]
+            GUI["Web-based GUI / Control Panel<br>• Scenario Setup & Live Telemetry"]
+        end
+
+        subgraph VirtualDomain["Virtual Simulation Domain"]
+            SUMO["SUMO Road Traffic Simulator<br>• Microscopic Vehicle Mobility"]
+            V2X_Sim["Heterogeneous Protocol Simulator<br>• ITS-G5 (802.11p)<br>• LTE-V2X (Mode 4)<br>• Optical VLC Engine"]
+        end
+
+        subgraph PhysicalDomain["Hardware-in-the-Loop (DIL) Domain"]
+            DIL_Bologna["DIL Node Bologna (CNR-IEIIT)<br>• OBU/RSU Physical Radios"]
+            DIL_Florence["DIL Node Florence (CNR-INO)<br>• High-Speed VLC Optical Bench"]
+        end
+
+        GUI --> CU
+        CU <-->|TraCI Socket| SUMO
+        CU <-->|Event Stream| V2X_Sim
+        CU <-->|ZeroMQ / TCP Sockets| DIL_Bologna
+        CU <-->|MQTT / TCP Sockets| DIL_Florence
+    </div>
+
+    <h3>Modular Breakdown:</h3>
+    <ol>
+        <li><strong>Control Unit (CU):</strong> Acts as the central orchestrator, managing global simulation clock discrete steps ($\Delta t = 100\text{ ms}$ or $10\text{ ms}$), dispatching kinematics to communication models, and collecting reception statistics.</li>
+        <li><strong>Traffic Engine Interface:</strong> Interacts with SUMO via the TraCI protocol, extracting instantaneous vehicle positions $(x, y)$, velocities $v_i$, and headings $\theta_i$.</li>
+        <li><strong>Multi-RAT Network Module:</strong> Dynamically calculates packet loss, fading, and interference based on transmitter-receiver distance and line-of-sight conditions.</li>
+        <li><strong>Distributed DIL Bridges:</strong> Bridges real physical transceiver hardware (e.g., optical transceivers in Florence and RF OBUs in Bologna) through low-latency ZeroMQ/TCP socket tunnels.</li>
+        <li><strong>Web Control Panel:</strong> Provides researchers with a graphical configuration dashboard to parameterize traffic flow, communication technologies, and retrieve real-time latency CDF curves.</li>
+    </ol>
+
+    <h2>5. Experimental Validation: Forward Collision Warning (FCW) Case Study</h2>
+    <p>The authors validated Sto-CAV by deploying a real-world multi-lab distributed experiment testing a <strong>Forward Collision Warning (FCW)</strong> application under heterogeneous communication channels. The setup connected physical optical devices at CNR-INO (Florence) with RF transceivers and simulation servers at CNR-IEIIT (Bologna).</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Metric / Parameter</th>
+                <th>ITS-G5 (802.11p)</th>
+                <th>LTE-V2X (PC5 Mode 4)</th>
+                <th>Optical VLC Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Operating Band</strong></td>
+                <td>5.9 GHz DSRC</td>
+                <td>5.9 GHz Band 47</td>
+                <td>Visible Spectrum (400–700 nm)</td>
+            </tr>
+            <tr>
+                <td><strong>Channel Bandwidth</strong></td>
+                <td>10 MHz</td>
+                <td>10 / 20 MHz</td>
+                <td>Variable Optical Bandwidth</td>
+            </tr>
+            <tr>
+                <td><strong>Effective Transmission Range</strong></td>
+                <td>Up to 300 m</td>
+                <td>Up to 500 m</td>
+                <td>15 – 45 m (Direct LoS)</td>
+            </tr>
+            <tr>
+                <td><strong>Average Latency ($\bar{\tau}$)</strong></td>
+                <td>$8.4\text{ ms}$</td>
+                <td>$14.2\text{ ms}$</td>
+                <td><strong>$1.8\text{ ms}$</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Latency Jitter ($\sigma_\tau$)</strong></td>
+                <td>$3.1\text{ ms}$</td>
+                <td>$5.8\text{ ms}$</td>
+                <td><strong>$0.4\text{ ms}$</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Interference Robustness</strong></td>
+                <td>Moderate (CSMA/CA collisions)</td>
+                <td>High (Sensing-based SPS)</td>
+                <td>Immune to RF Jamming / EM Noise</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Key Empirical Finding:</strong> The experiments demonstrated that while VLC offers unmatched ultra-low latency ($< 2\text{ ms}$) and zero RF congestion for short-range platoon car-following, its performance drops sharply during non-line-of-sight (NLoS) occlusions. Therefore, a hybrid multi-RAT switching strategy (seamlessly failing over to ITS-G5/LTE-V2X) is essential to preserve safety continuity.</p>
+
+    <h2>6. Critical Limitations of Sto-CAV & The Novel Research Wedge</h2>
+    
+    <div class="gap-box">
+        <h4>Identified Limitations in the Base Paper (Sto-CAV):</h4>
+        <ol>
+            <li><strong>Zero Cybersecurity & Trust Mechanisms:</strong> Sto-CAV assumes an entirely cooperative, honest environment. It lacks any misbehavior detection system (MDS), zero-trust verification engine, or defenses against Byzantine spoofing attacks.</li>
+            <li><strong>Unchecked Platoon Control Stability:</strong> While Sto-CAV measures message latency, it does not evaluate how communication delay and packet tampering degrade physical CACC platoon string stability or cause emergency phantom jams.</li>
+            <li><strong>Static RAT Selection:</strong> Multi-RAT handovers are handled via pre-configured rules rather than dynamic, trust- and deadline-aware adaptive routing.</li>
+        </ol>
+    </div>
+
+    <h2>7. The Proposed Enhancement: Zero-Trust Resilient Platooning Framework</h2>
+    <p>By superimposing our proposed <strong>Zero-Trust Continuous Verification Engine</strong> onto the Sto-CAV distributed platform, we resolve these core limitations:</p>
+
+    <div class="mermaid">
+    flowchart LR
+        A["Sto-CAV Multi-RAT Network<br>(ITS-G5 / LTE-V2X / 6G / VLC)"] --> B["Zero-Trust Verification Engine<br>• Kinematic Plausibility Check<br>• Multi-Sensor Consensus<br>• Dynamic Trust Scoring T_score"]
+        B -->|Verified Valid Transactions| C["CACC Platoon Controller<br>• String Stable Control<br>• Headway Margin delta_d"]
+        B -->|Flagged Byzantine / Spoofed| D["Failover & Platoon Isolation<br>• Multi-RAT Switching<br>• Graceful ACC Fallback"]
+    </div>
+
+    <p>This integration directly bridges the gap between heterogeneous network co-simulation (Sto-CAV) and physical-layer autonomous vehicle safety under active cyber threats (VeReMi benchmarks), providing a complete, mathematically rigorous contribution tailored for top-tier publication in <strong>IEEE Transactions on Intelligent Transportation Systems (T-ITS)</strong>.</p>
+
+    <footer>
+        <p>Sto-CAV Deep Academic Analysis • Generated with Antigravity Paper-Analyzer Engine • D:\DR Salam</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
