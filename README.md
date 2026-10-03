@@ -249,20 +249,20 @@ python run_all_experiments.py --shap        # Global TreeSHAP Attribution & Dedi
 
 $$\mathbb{E}[|\phi_i|] = \frac{1}{N} \sum_{k=1}^{N} \left| \phi_i(x^{(k)}) \right|$$
 
-| Rank | Feature Description | Mathematical Notation | Mean Absolute SHAP $\mathbb{E}[|\phi_i|]$ | Relative Importance (%) | Physical / Forensic Decision Role |
+| Rank | Feature Description | Mathematical Notation | Mean Absolute SHAP $\mathbb{E}[\|\phi_i\|]$ | Relative Importance (%) | Physical / Forensic Decision Role |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **1** | **Radar-V2X Position Residual** | $\Delta p_{\mathrm{Radar\text{-}V2X}}$ | **0.488010** | **98.11%** | **Primary Zero-Trust Spatial Anchor** |
-| **2** | Claimed Speed Magnitude | $v_{\mathrm{V2X}}$ | 0.001889 | 0.38% | Kinematic Plausibility Bound |
+| **1** | **Radar-V2X Position Residual** | **$\Delta p_{\text{Radar-V2X}}$** | **0.488010** | **98.11%** | **Primary Zero-Trust Spatial Anchor** |
+| **2** | Claimed Speed Magnitude | $v_{\text{V2X}}$ | 0.001889 | 0.38% | Kinematic Plausibility Bound |
 | **3** | Position Noise Magnitude | $\sigma_p$ | 0.001866 | 0.38% | Channel Uncertainty Bound |
-| **4** | **Radar-V2X Speed Residual** | $\Delta v_{\mathrm{Radar\text{-}V2X}}$ | **0.001692** | **0.34%** | Dynamic Doppler Cross-Check |
+| **4** | **Radar-V2X Speed Residual** | **$\Delta v_{\text{Radar-V2X}}$** | **0.001692** | **0.34%** | Dynamic Doppler Cross-Check |
 | **5** | Heading Noise Magnitude | $\sigma_\theta$ | 0.001497 | 0.30% | Orientation Plausibility |
-| **6** | Claimed Accel Magnitude | $a_{\mathrm{V2X}}$ | 0.001263 | 0.25% | Kinematic Dynamic Bound |
+| **6** | Claimed Accel Magnitude | $a_{\text{V2X}}$ | 0.001263 | 0.25% | Kinematic Dynamic Bound |
 | **7** | Accel Noise Magnitude | $\sigma_a$ | 0.000646 | 0.13% | Sensor Noise Threshold |
 | **8** | Speed Noise Magnitude | $\sigma_v$ | 0.000523 | 0.11% | Longitudinal Velocity Noise |
 | **9** | Speed Limit Violation | $\mathbb{I}(v > 45)$ | 0.000006 | $<0.01\%$ | Physical Road Boundary Check |
 | **10** | Jerk Bound Violation | $\mathbb{I}(a > 5.5)$ | 0.000000 | $<0.01\%$ | Extreme Jerk Dynamic Boundary |
 
-> **Critical Analytical Takeaway**: The spatial-temporal cross-modal residual $\Delta p_{\mathrm{Radar\text{-}V2X}}$ accounts for **$98.11\%$** of total decision weight in isolating malicious BSM packets. Raw V2X coordinates and speeds in isolation provide $<1\%$ predictive power, empirically explaining why single-modality intrusion detection systems fail ($\sim 54\%$ baseline accuracy) without multi-modal zero-trust physical cross-validation.
+> **Critical Analytical Takeaway**: The spatial-temporal cross-modal residual $\Delta p_{\text{Radar-V2X}}$ accounts for **$98.11\%$** of total decision weight in isolating malicious BSM packets. Raw V2X coordinates and speeds in isolation provide $<1\%$ predictive power, empirically explaining why single-modality intrusion detection systems fail ($\sim 54\%$ baseline accuracy) without multi-modal zero-trust physical cross-validation.
 
 ---
 
