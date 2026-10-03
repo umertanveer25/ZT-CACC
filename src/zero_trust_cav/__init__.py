@@ -6,7 +6,7 @@ Heterogeneous Multi-RAT V2X Switching, and String-Stable CACC Platooning.
 """
 
 __version__ = "1.0.0"
-__author__ = "M. Umer Salam & Researchers"
+__author__ = "Umer Tanveer and Abdul Salam"
 __license__ = "MIT"
 
 from .config import (

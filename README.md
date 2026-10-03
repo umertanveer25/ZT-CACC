@@ -7,6 +7,10 @@
 [![Artifacts: Gold Standard](https://img.shields.io/badge/Artifacts-100%25%20Reproducible-success.svg)]()
 [![Dataset: VeReMi](https://img.shields.io/badge/Dataset-VeReMi%20Benchmark-orange.svg)](https://github.com/VeReMi-dataset/VeReMi)
 
+> **Authors**: **Umer Tanveer** and **Abdul Salam**  
+> **Repository**: [https://github.com/umertanveer25/ZT-CACC](https://github.com/umertanveer25/ZT-CACC)  
+> **Target Venue**: *IEEE Transactions on Intelligent Transportation Systems (T-ITS) / IEEE TVT*
+
 ---
 
 ## 📖 Table of Contents
@@ -240,21 +244,25 @@ python run_all_experiments.py --shap        # Global TreeSHAP Attribution & Dedi
 
 ---
 
-### **Table VIII: Global SHAP Feature Attribution Ranking**
+### **Table VIII: Global SHAP Feature Attribution & Anomaly Decision Ranking**
 *File: [`results/tables/Table8_Global_SHAP_Feature_Attribution.csv`](results/tables/Table8_Global_SHAP_Feature_Attribution.csv)*
 
-| Rank | Feature Name | Mathematical Symbol | Mean Absolute SHAP $\mathbb{E}[|\phi_i|]$ | Relative Importance |
-| :---: | :--- | :---: | :---: | :---: |
-| **1** | **Radar-V2X Position Residual** | $\mathbf{\Delta p_{\mathrm{Radar\text{-}V2X}}}$ | **0.488010** | **98.11%** |
-| **2** | Claimed Speed Magnitude | $v_{\mathrm{V2X}}$ | 0.001889 | 0.38% |
-| **3** | Position Noise Magnitude | $\sigma_p$ | 0.001866 | 0.38% |
-| **4** | **Radar-V2X Speed Residual** | $\mathbf{\Delta v_{\mathrm{Radar\text{-}V2X}}}$ | **0.001692** | **0.34%** |
-| **5** | Heading Noise Magnitude | $\sigma_\theta$ | 0.001497 | 0.30% |
-| **6** | Claimed Accel Magnitude | $a_{\mathrm{V2X}}$ | 0.001263 | 0.25% |
-| **7** | Accel Noise Magnitude | $\sigma_a$ | 0.000646 | 0.13% |
-| **8** | Speed Noise Magnitude | $\sigma_v$ | 0.000523 | 0.11% |
-| **9** | Speed Limit Violation | $\mathbb{I}(v > 45)$ | 0.000006 | $<0.01\%$ |
-| **10** | Jerk Bound Violation | $\mathbb{I}(a > 5.5)$ | 0.000000 | $<0.01\%$ |
+$$\mathbb{E}[|\phi_i|] = \frac{1}{N} \sum_{k=1}^{N} \left| \phi_i(x^{(k)}) \right|$$
+
+| Rank | Feature Description | Mathematical Notation | Mean Absolute SHAP $\mathbb{E}[|\phi_i|]$ | Relative Importance (%) | Physical / Forensic Decision Role |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| **1** | **Radar-V2X Position Residual** | $\Delta p_{\mathrm{Radar\text{-}V2X}}$ | **0.488010** | **98.11%** | **Primary Zero-Trust Spatial Anchor** |
+| **2** | Claimed Speed Magnitude | $v_{\mathrm{V2X}}$ | 0.001889 | 0.38% | Kinematic Plausibility Bound |
+| **3** | Position Noise Magnitude | $\sigma_p$ | 0.001866 | 0.38% | Channel Uncertainty Bound |
+| **4** | **Radar-V2X Speed Residual** | $\Delta v_{\mathrm{Radar\text{-}V2X}}$ | **0.001692** | **0.34%** | Dynamic Doppler Cross-Check |
+| **5** | Heading Noise Magnitude | $\sigma_\theta$ | 0.001497 | 0.30% | Orientation Plausibility |
+| **6** | Claimed Accel Magnitude | $a_{\mathrm{V2X}}$ | 0.001263 | 0.25% | Kinematic Dynamic Bound |
+| **7** | Accel Noise Magnitude | $\sigma_a$ | 0.000646 | 0.13% | Sensor Noise Threshold |
+| **8** | Speed Noise Magnitude | $\sigma_v$ | 0.000523 | 0.11% | Longitudinal Velocity Noise |
+| **9** | Speed Limit Violation | $\mathbb{I}(v > 45)$ | 0.000006 | $<0.01\%$ | Physical Road Boundary Check |
+| **10** | Jerk Bound Violation | $\mathbb{I}(a > 5.5)$ | 0.000000 | $<0.01\%$ | Extreme Jerk Dynamic Boundary |
+
+> **Critical Analytical Takeaway**: The spatial-temporal cross-modal residual $\Delta p_{\mathrm{Radar\text{-}V2X}}$ accounts for **$98.11\%$** of total decision weight in isolating malicious BSM packets. Raw V2X coordinates and speeds in isolation provide $<1\%$ predictive power, empirically explaining why single-modality intrusion detection systems fail ($\sim 54\%$ baseline accuracy) without multi-modal zero-trust physical cross-validation.
 
 ---
 
@@ -375,8 +383,8 @@ python run_all_experiments.py --shap        # Global TreeSHAP Attribution & Dedi
 If you use this benchmark suite, controller models, or simulation artifacts in your academic research, please cite:
 
 ```bibtex
-@article{salam2026zerotrust,
-  author={Salam, M. Umer and Co-Authors},
+@article{tanveer2026zerotrust,
+  author={Tanveer, Umer and Salam, Abdul},
   journal={IEEE Transactions on Intelligent Transportation Systems}, 
   title={Zero-Trust Transaction Verification and Resilient CACC Platooning over Heterogeneous Multi-RAT V2X Networks}, 
   year={2026},

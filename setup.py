@@ -4,6 +4,7 @@ from setuptools import setup, find_packages
 setup(
     name="zero-trust-cav",
     version="1.0.0",
+    author="Umer Tanveer, Abdul Salam",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     python_requires=">=3.10",
