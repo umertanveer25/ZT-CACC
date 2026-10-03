@@ -50,6 +50,7 @@ ENV/
 env.bak/
 venv.bak/
 create_github_repo.py
+openalex_*
 
 # IDE and OS files
 .vscode/
@@ -59,6 +60,12 @@ create_github_repo.py
 *~
 .DS_Store
 Thumbs.db
+
+# Manuscript LaTeX files & PDF docs (kept purely local)
+paper/
+*.pdf
+*.tex
+*.bib
 
 # Large dataset files (>100MB) and archives
 Veremi_final_dataset.csv
