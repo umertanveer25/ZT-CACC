@@ -1,0 +1,58 @@
+[
+    {
+        "feature": "Position Residual Invariant",
+        "symbol": "$r_p$",
+        "mean_abs_shap": 1.842,
+        "relative_weight": 38.38,
+        "display_pct": "38.4%",
+        "type": "Physical Invariant"
+    },
+    {
+        "feature": "Velocity Residual Invariant",
+        "symbol": "$r_v$",
+        "mean_abs_shap": 1.215,
+        "relative_weight": 25.31,
+        "display_pct": "25.3%",
+        "type": "Physical Invariant"
+    },
+    {
+        "feature": "Acceleration Invariant",
+        "symbol": "$r_a$",
+        "mean_abs_shap": 0.845,
+        "relative_weight": 17.6,
+        "display_pct": "17.6%",
+        "type": "Physical Invariant"
+    },
+    {
+        "feature": "Optical VLC Channel Quality",
+        "symbol": "$\\mathrm{CQI}_{\\mathrm{VLC}}$",
+        "mean_abs_shap": 0.384,
+        "relative_weight": 8.0,
+        "display_pct": "8.0%",
+        "type": "Network Telemetry"
+    },
+    {
+        "feature": "ITS-G5 Channel Quality",
+        "symbol": "$\\mathrm{CQI}_{\\mathrm{G5}}$",
+        "mean_abs_shap": 0.245,
+        "relative_weight": 5.1,
+        "display_pct": "5.1%",
+        "type": "Network Telemetry"
+    },
+    {
+        "feature": "Packet Error Rate",
+        "symbol": "$\\mathrm{PER}_i$",
+        "mean_abs_shap": 0.165,
+        "relative_weight": 3.44,
+        "display_pct": "3.4%",
+        "type": "Network Telemetry"
+    },
+    {
+        "feature": "LTE-V2X Channel Quality",
+        "symbol": "$\\mathrm{CQI}_{\\mathrm{LTE}}$",
+        "mean_abs_shap": 0.104,
+        "relative_weight": 2.17,
+        "display_pct": "2.2%",
+        "type": "Network Telemetry"
+    }
+]

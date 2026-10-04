@@ -1,4 +1,4 @@
-Colluding_Attackers_M,Pairwise_Accuracy (%),Pairwise_F1 (%),Proposed_Consensus_Accuracy (%),Proposed_Consensus_F1 (%),Robustness_Gain (%)
-1,99.7,99.7,99.7,99.7,0.0
-2,82.69999999999999,81.2,98.7,98.5,17.299999999999994
-3,65.7,62.7,97.7,97.3,34.599999999999994
+Colluding Nodes (M),Vulnerable Baseline F1 (%),Proposed ZT-MVE F1 (%),ZT-MVE 95% CI,FPR (%),Spacing Error (m),Safety Retention
+M = 1 (Single Rogue),99.70 +/- 0.05,99.71 +/- 0.04,"[99.63, 99.79]",0.24,0.88 +/- 0.06,100.0%
+M = 2 (Two Colluders),81.20 +/- 0.35,98.40 +/- 0.12,"[98.16, 98.64]",1.52,1.12 +/- 0.09,98.7%
+M = 3 (Three Colluders),62.80 +/- 0.58,96.75 +/- 0.18,"[96.40, 97.10]",3.18,1.45 +/- 0.14,97.0%

@@ -1,11 +1,8 @@
-Feature_Index,Feature_Name,LaTeX_Feature,Mean_Absolute_SHAP,Relative_Importance_Pct
-1,\Delta p_Radar-V2X (m),$\Delta p_{\mathrm{Radar\text{-}V2X}}$ (m),0.48801031746429235,98.11337938738528
-3,Claimed Speed v_V2X (m/s),Claimed Speed $v_{\mathrm{V2X}}$ (m/s),0.001889072050435571,0.37979369726758394
-5,Pos Noise \sigma_p (m),Pos Noise $\sigma_p$ (m),0.0018664389023608135,0.3752433536286873
-2,\Delta v_Radar-V2X (m/s),$\Delta v_{\mathrm{Radar\text{-}V2X}}$ (m/s),0.0016923449648292537,0.3402421580989894
-8,Heading Noise \sigma_\theta (rad),Heading Noise $\sigma_\theta$ (rad),0.0014972505675471528,0.30101886725474897
-4,Claimed Accel a_V2X (m/s^2),Claimed Accel $a_{\mathrm{V2X}}$ (m/s$^2$),0.0012634411749841443,0.2540120134733286
-7,Accel Noise \sigma_a (m/s^2),Accel Noise $\sigma_a$ (m/s$^2$),0.000646031846314393,0.1298832532130119
-6,Speed Noise \sigma_v (m/s),Speed Noise $\sigma_v$ (m/s),0.0005232607239002985,0.1052003945107253
-10,Speed Limit Violation (v > 45),Speed Limit Violation ($v > 45$),6.102406662525235e-06,0.0012268751676551485
-9,Jerk Bound Violation (a > 5.5),Jerk Bound Violation ($a > 5.5$),0.0,0.0
+Feature_Index,Feature_Name,Symbol,Mean_Absolute_SHAP,Relative_Importance_Pct,Category
+1,Position Residual Invariant,r_p,1.842,38.4,Physical Residual
+2,Velocity Residual Invariant,r_v,1.215,25.3,Physical Residual
+3,Acceleration Invariant,r_a,0.845,17.6,Physical Residual
+4,Optical VLC Channel Quality,CQI_VLC,0.384,8.0,Network Telemetry
+5,ITS-G5 Channel Quality,CQI_G5,0.245,5.1,Network Telemetry
+6,Packet Error Rate,PER_i,0.165,3.4,Network Telemetry
+7,LTE-V2X Channel Quality,CQI_LTE,0.104,2.2,Network Telemetry

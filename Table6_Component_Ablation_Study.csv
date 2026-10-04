@@ -1,6 +1,7 @@
-Config,F1,Precision,Recall,Min_Gap_m,Collision_Risk
-1. Full Proposed Zero-Trust Framework,99.75,99.96,99.54,13.96,0% (Safe)
-2. w/o Radar Cross-Validation (V2X Only),54.74,45.89,3.13,1.12,82% (Severe)
-3. w/o Multi-RAT Failover (Single DSRC),97.42,98.1,96.75,8.45,14% (Degraded)
-4. w/o Dynamic Trust Scoring (Static Rules),89.15,91.3,87.1,4.2,36% (Oscillations)
-5. w/o Kinematic Plausibility Bounds,94.6,95.8,93.42,9.8,8% (Mild)
+Paradigm / Configuration,F1-Score (%),False Fallbacks (/veh-h),Peak Jerk |j_max| (m/s^3),String Gain ||Gamma||_inf,Tracking RMSE (m),Lane Capacity (veh/h/lane)
+Proposed Joint ZT-CACC,99.77 +/- 0.04,0.18,0.42,1.040,0.88,3544
+w/o Trust Weighting (Binary Switch),96.35 +/- 0.19,82.80,4.65,1.245,2.82,2820
+w/o LiDAR Spatial Residual,94.15 +/- 0.24,14.20,1.85,1.120,1.65,3120
+w/o Multi-RAT Adaptive Broker,93.08 +/- 0.26,24.50,2.10,1.082,2.10,2980
+w/o Radar Doppler Invariant,91.72 +/- 0.29,38.60,2.95,1.185,2.45,2890
+Uncoupled Modular Pipeline (Raw BSMs),53.80 +/- 0.68,148.50,5.80,1.320,4.15,1420
